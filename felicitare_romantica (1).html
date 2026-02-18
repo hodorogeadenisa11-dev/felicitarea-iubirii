@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pentru Iubirea Mea ❤️</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Segoe UI',sans-serif;
+    color:white;
+    text-align:center;
+    background:linear-gradient(-45deg,#ff4e8a,#a044ff,#ff9a9e,#ff2e63);
+    background-size:400% 400%;
+    animation:gradientMove 15s ease infinite;
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+#intro{
+    cursor:pointer;
+    z-index:10;
+}
+
+#heart{
+    font-size:22vw;
+    animation:heartbeat 1.3s infinite;
+}
+
+@keyframes heartbeat{
+    0%{transform:scale(1);}
+    25%{transform:scale(1.15);}
+    40%{transform:scale(1);}
+    60%{transform:scale(1.15);}
+    100%{transform:scale(1);}
+}
+
+#intro p{
+    font-size:6vw;
+    margin-top:10px;
+}
+
+#message{
+    position:absolute;
+    width:90%;
+    font-size:6vw;
+    line-height:1.5;
+    opacity:0;
+    position:relative;
+    z-index:5;
+}
+
+.glow{
+    color:#ffffff;
+    font-weight:bold;
+    text-shadow:
+        0 0 10px #fff,
+        0 0 20px #ff4d88,
+        0 0 40px #ff4d88,
+        0 0 60px #ff1a75,
+        0 0 80px #ff0066;
+    animation:pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+    100%{transform:scale(1);}
+}
+
+.floating-heart, .sticker, .extra-heart{
+    position:absolute;
+    font-size:4vw;
+    animation:floatUp 4s linear forwards;
+}
+
+@keyframes floatUp{
+    0%{transform:translateY(0) rotate(0deg); opacity:1;}
+    100%{transform:translateY(-150px) rotate(360deg); opacity:0;}
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    opacity:0.7;
+    animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:0.3;}
+    to{opacity:1;}
+}
+
+.final-heart, .second-heart{
+    position:absolute;
+    font-size:50vw;
+    color:#ff4e8a;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%) scale(0);
+    opacity:0;
+    transition: all 2s ease;
+    pointer-events:none;
+    z-index:15;
+}
+
+.second-heart{
+    font-size:15vw;
+    top:75%;
+    left:50%;
+    transform:translate(-50%, -50%) scale(0);
+    z-index:20;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop autoplay>
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<div id="intro" onclick="startLove()">
+    <div id="heart">💖</div>
+    <p>Apasă aici Iubire</p>
+</div>
+
+<div id="message"></div>
+<div id="finalHeart" class="final-heart">💖</div>
+<div id="secondHeart" class="second-heart">💖</div>
+<div class="particles" id="particlesContainer"></div>
+
+<script>
+for(let i=0;i<100;i++){
+    let star=document.createElement("div");
+    star.className="star";
+    star.style.top=Math.random()*100+"vh";
+    star.style.left=Math.random()*100+"vw";
+    star.style.animationDuration=(Math.random()*2+1)+"s";
+    document.body.appendChild(star);
+}
+
+let text = "Te iubesc enorm de mult, dragostea mea! Uite ca am incercat sa o fac si pe asta ca stiu ca iti plac mesajele dragute, ce stii bine fac bine primesc. Imi e dor de tine si doamne ajuta sa iti exprimi si tu cat de mult posibil sentimentele. La cat mai multi ani impreuna linistiti, plini de iubire, comunicare, respect, umor, sinceritate, empatie, loialitate, sustinere, intelegere, ascultare si tot ce este mai bun. Te iubesc!!!!";
+let i = 0;
+let speed = 100; // mai lent acum
+let heartsStarted = false;
+
+function typeWriter(){
+    if(i < text.length){
+        let currentText = text.substring(0, i+1);
+        if(currentText.includes("Te iubesc")){
+            currentText = currentText.replace("Te iubesc", "<span class='glow'>Te iubesc</span>");
+            if(!heartsStarted){
+                heartsStarted = true;
+                startFloatingHearts();
+                startParticles();
+                startStickers();
+            }
+        }
+        document.getElementById("message").innerHTML = currentText.replace(/\n/g,"<br>");
+        i++;
+        setTimeout(typeWriter, speed);
+    } else {
+        showFinalHeart();
+        showSecondHeart();
+    }
+}
+
+function startFloatingHearts(){
+    setInterval(()=>{
+        let heart=document.createElement("div");
+        heart.className="floating-heart";
+        heart.innerHTML="❤";
+        heart.style.left=(Math.random()*80+10)+"%";
+        heart.style.top="60%";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),4000);
+    },300);
+}
+
+function startStickers(){
+    let stickers = ['💌','🌹','💋','🍫','🌟'];
+    setInterval(()=>{
+        let s = document.createElement('div');
+        s.className='sticker';
+        s.innerHTML = stickers[Math.floor(Math.random()*stickers.length)];
+        s.style.left = Math.random()*90+'%';
+        s.style.top = '70%';
+        s.style.fontSize = (Math.random()*5+3)+'vw';
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),4000);
+    },500);
+}
+
+function startParticles(){
+    let container = document.getElementById('particlesContainer');
+    setInterval(()=>{
+        let p = document.createElement('div');
+        p.className='particle';
+        let x = (Math.random()*200 - 100) + 'px';
+        let y = (Math.random()*-200 - 50) + 'px';
+        p.style.setProperty('--x', x);
+        p.style.setProperty('--y', y);
+        p.style.left = Math.random()*100 + '%';
+        p.style.top = '80%';
+        container.appendChild(p);
+        setTimeout(()=>p.remove(),2000);
+    },150);
+}
+
+function startLove(){
+    document.getElementById("intro").style.display="none";
+    document.getElementById("message").style.opacity="1";
+    let audio = document.getElementById("music");
+    audio.play().catch(()=>{console.log('Click pentru a porni muzica pe mobil');});
+    typeWriter();
+}
+
+function showFinalHeart(){
+    let heart = document.getElementById("finalHeart");
+    heart.style.transform = "translate(-50%, -50%) scale(1)";
+    heart.style.opacity = "1";
+}
+
+function showSecondHeart(){
+    let heart = document.getElementById("secondHeart");
+    heart.style.transform = "translate(-50%, -50%) scale(1)";
+    heart.style.opacity = "1";
+    heart.addEventListener('click', ()=>{
+        let msgDiv = document.getElementById("message");
+        msgDiv.innerHTML += "<br><span class='glow'>Nu uita că te iubesc cel mai mult!</span>";
+        heart.style.display = 'none';
+    });
+}
+</script>
+
+</body>
+</html>
